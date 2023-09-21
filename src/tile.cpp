@@ -930,7 +930,7 @@ void Tile::addThing(int32_t, Thing* thing)
 
 			items = makeItemList();
 			items->insert(items->getBeginDownItem(), item);
-			items->increaseDownItemCount();
+			items->addDownItemCount(1);
 			onAddTileItem(item);
 		}
 	}
@@ -1112,7 +1112,7 @@ void Tile::removeThing(Thing* thing, uint32_t count)
 
 			item->setParent(nullptr);
 			items->erase(it);
-			items->decreaseDownItemCount();
+			items->addDownItemCount(-1);
 			onRemoveTileItem(spectators, oldStackPosVector, item);
 		}
 	}
@@ -1497,7 +1497,7 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 			}
 		} else {
 			items->insert(items->getBeginDownItem(), item);
-			items->increaseDownItemCount();
+			items->addDownItemCount(1);
 		}
 
 		setTileFlags(item);
@@ -1639,25 +1639,6 @@ Item* Tile::getUseItem(int32_t index) const
 	if (Thing* thing = getThing(index)) {
 		return thing->getItem();
 	}
-
-	return nullptr;
-}
-
-Item* Tile::getDoorItem() const
-{
-	const TileItemVector* items = getItemList();
-	if (!items || items->size() == 0) {
-    	return ground;
-  	}
-
- 	if (items) {
-    	for (Item* item : *items) {
-      		const ItemType& it = Item::items[item->getID()];
-      		if (it.isDoor()) {
-        		return item;
-     		}
-    	}
-  	}
 
 	return nullptr;
 }

@@ -1027,29 +1027,6 @@ Storage = {
 		Reward = 12513,
 		TheatreScript = 12514
 	},
-	ShadownofYalahar = {
-		QuestStart = 95591,
-		Cerdras = 91592,
-		Dreadeye = 91593,
-		Boveas = 91594,
-		Scutty = 91595,
-		Milos = 91596,
-		GolemParts = 91334,
-		Questline = 95592,
-		-- doors
-		doorFactory = 35593,
-		doorCharge = 35592,
-		doorOut06 = 35595,
-		doorPower07 = 35597,
-		doorStable08 = 35599,
-		doorRitual09 = 35704,
-		doorShower11 = 35705,
-		doorLast13 = 35608,
-		doorLastLaboratorio13 =	35610,
-		doorCathedral = 35615,
-		doorThorn = 35616,
-		doorFibula = 35617
-	},
 	CaptainHaba = 12540,
 	secretService = {
 		Quest = 12550,
@@ -1219,9 +1196,9 @@ Storage = {
 		TrophyWarlord = 1107,
 
 		-- Actions Reward Doors
-		Greenhorn = 26101,
-		Scrapper = 27101,
-		Warlord = 28101
+		Greenhorn = 26100,
+		Scrapper = 27100,
+		Warlord = 28100
 	},
 	QuestChests = {
 		-- Todo: Move to a seperate range
@@ -1476,15 +1453,8 @@ Storage = {
 	Factions = 50723,
 	blockMovementStorage = 100000,
 	PetSummon = 60045,
-	isTraining = 37,
+	isTraining = 37
 
-	dailyReward = {
-        nextRewardPick = DAILYREWARDSTORAGE_NEXTREWARDPICK,
-        lastRewardPick = DAILYREWARDSTORAGE_LASTREWARDPICK,
-        streakDays = DAILYREWARDSTORAGE_STREAKDAYS,
-        exhaust = 69802,
-        currentIndex = 69803
-    }
 }
 
 GlobalStorage = {
@@ -1607,11 +1577,9 @@ GlobalStorage = {
 		DiprathSwitchesGlobalStorage = 201,
 		AshmunrahSwitchesGlobalStorage = 202
 	},
-	Darkcathedral = 64436,
 	NaginataStone = 50058,
 	ExpBoost = 51052,
 	SwordOfFury = 5635,
-	XpDisplayMode = 5634,
-	LastServerSave =  69798
+	XpDisplayMode = 5634
 
 }

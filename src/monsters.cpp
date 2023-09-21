@@ -799,7 +799,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 	}
 
 	if ((attr = monsterNode.attribute("speed"))) {
-		mType->info.baseSpeed = pugi::cast<int32_t>(attr.value()) * 1.10;
+		mType->info.baseSpeed = pugi::cast<int32_t>(attr.value()) * 2.55;
 	}
 
 	if ((attr = monsterNode.attribute("manacost"))) {
@@ -1279,11 +1279,7 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 	}
 
 	if ((attr = node.attribute("chance")) || (attr = node.attribute("chance1"))) {
-		int32_t lootChance = pugi::cast<int32_t>(attr.value());
-		if (lootChance > static_cast<int32_t>(MAX_LOOTCHANCE)) {
-			std::cout << "[Warning - Monsters::loadMonster] Invalid \"chance\" "<< lootChance <<" used for loot, the max is " << MAX_LOOTCHANCE << ". " << std::endl;
-		}
-		lootBlock.chance = std::min<int32_t>(MAX_LOOTCHANCE, lootChance);
+		lootBlock.chance = std::min<int32_t>(MAX_LOOTCHANCE, pugi::cast<int32_t>(attr.value()));
 	} else {
 		lootBlock.chance = MAX_LOOTCHANCE;
 	}

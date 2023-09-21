@@ -34,7 +34,6 @@ class Signals
 		void asyncWait();
 		static void dispatchSignalHandler(int signal);
 
-		static void sigbreakHandler();
 		static void sigintHandler();
 		static void sighupHandler();
 		static void sigtermHandler();

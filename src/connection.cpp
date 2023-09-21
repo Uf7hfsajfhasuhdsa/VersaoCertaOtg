@@ -154,9 +154,12 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
 	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
+		const auto client = std::dynamic_pointer_cast<ProtocolGame>(protocol);
+		if (client) {
 			std::cout << convertIPToString(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
 			close();
 			return;
+		}
 	}
 
 	if (!receivedLastChar && connectionState == CONNECTION_STATE_CONNECTING_STAGE2) {
@@ -292,7 +295,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 }
 
 bool Connection::detectAttack(const uint32_t currentPacketChecksum) { // jlcvp(Leu) - detect packet replication attack
-	const auto it = checksumsMap.find(currentPacketChecksum); //this find is complexity is O(1)
+	const auto it = checksumsMap.find(currentPacketChecksum);
 	if(it == checksumsMap.end()){ //element doesn't exists
 		checksumsMap.insert(std::make_pair(currentPacketChecksum, 1));
 	} else {

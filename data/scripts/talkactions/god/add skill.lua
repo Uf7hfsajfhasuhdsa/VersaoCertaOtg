@@ -55,18 +55,13 @@ function talk.onSay(player, words, param)
 	end
 
 	local ch = split[2]:sub(1, 1)
-	if ch == "l" or ch == "e" then
-		targetLevel = target:getLevel() + count
-		targetExp = getExpForLevel(targetLevel)
-		addExp = targetExp - target:getExperience()
-		target:addExperience(addExp, false)
-	elseif ch == "m" then
-		for i = 1, count do
+	for i = 1, count do
+		if ch == "l" or ch == "e" then
+			target:addExperience(getExpForLevel(target:getLevel() + 1) - target:getExperience(), false)
+		elseif ch == "m" then
 			target:addManaSpent(target:getVocation():getRequiredManaSpent(target:getBaseMagicLevel() + 1) - target:getManaSpent())
-		end
-	else
-		local skillId = getSkillId(split[2])
-		for i = 1, count do
+		else
+			local skillId = getSkillId(split[2])
 			target:addSkillTries(skillId, target:getVocation():getRequiredSkillTries(skillId, target:getSkillLevel(skillId) + 1) - target:getSkillTries(skillId))
 		end
 	end

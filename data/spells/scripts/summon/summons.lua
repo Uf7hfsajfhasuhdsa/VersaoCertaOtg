@@ -12,7 +12,8 @@ setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_BLOCKHIT)
 local area = createCombatArea(AREA_CIRCLE1X1)
 setCombatArea(combat, area)
 
-function onCastSpell(player, variant)
+function onCastSpell(creature, variant)
+	local player = Player(cid)
 	if not player then return false end
 
     if #player:getSummons() >= 1 then
@@ -35,13 +36,12 @@ function onCastSpell(player, variant)
 
     if not summonName then return false end
 
-    local mySummon = Game.createMonster(summonName, player:getPosition(), true, false)
+    local mySummon = Game.createMonster(summonName, player:getPosition(), true, false, player)
     if not mySummon then
         return combat:execute(player, variant)
     end
 
     player:addSummon(mySummon)
-	mySummon:reload()
     mySummon:registerEvent('petdeath')
 
     local deltaSpeed = math.max(player:getBaseSpeed() - mySummon:getBaseSpeed(), 0)

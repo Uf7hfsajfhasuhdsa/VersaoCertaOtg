@@ -1,11 +1,12 @@
-image: Visual Studio 2019
+image: Visual Studio 2017
 
 shallow_clone: true
 
 platform:
-  - Win32
+  - x64
 
 configuration:
+  - Debug
   - Release
 
 matrix:
@@ -13,24 +14,24 @@ matrix:
 
 only_commits:
   files:
-    - /source/src/
-    - /source/vc14/
+    - src/
+    - vc14/
     - .appveyor.yml
-    - /source/cmake/
+    - cmake/
 
 install:
-  - cmd : vcpkg install boost-iostreams:x86-windows
-  - cmd : vcpkg install boost-asio:x86-windows
-  - cmd : vcpkg install boost-system:x86-windows
-  - cmd : vcpkg install boost-filesystem:x86-windows
-  - cmd : vcpkg install boost-variant:x86-windows
-  - cmd : vcpkg install boost-lockfree:x86-windows
-  - cmd : vcpkg install cryptopp:x86-windows
-  - cmd : vcpkg install luajit:x86-windows
-  - cmd : vcpkg install libmariadb:x86-windows
-  - cmd : vcpkg install pugixml:x86-windows
-  - cmd : vcpkg install mpir:x86-windows
-  - cmd : vcpkg install spdlog:x86-windows
+  - cmd : vcpkg install boost-iostreams:x64-windows
+  - cmd : vcpkg install boost-asio:x64-windows
+  - cmd : vcpkg install boost-system:x64-windows
+  - cmd : vcpkg install boost-filesystem:x64-windows
+  - cmd : vcpkg install boost-variant:x64-windows
+  - cmd : vcpkg install boost-lockfree:x64-windows
+  - cmd : vcpkg install cryptopp:x64-windows
+  - cmd : vcpkg install luajit:x64-windows
+  - cmd : vcpkg install libmariadb:x64-windows
+  - cmd : vcpkg install pugixml:x64-windows
+  - cmd : vcpkg install mpir:x64-windows
+  - cmd : vcpkg install spdlog:x64-windows
 
 build:
   parallel: true
@@ -38,12 +39,12 @@ build:
   #verbosity: detailed
 
 after_build:
-  - 7z a -tzip OTG.zip -r .\source\vc14\*.exe -ir!.\source\vc14\*.dll
+  - 7z a -tzip OTG-Premium-Version.zip -r .\vc14\*.exe -ir!.\vc14\*.dll
 
 cache:
   - c:\tools\vcpkg\installed\
 
 artifacts:
-  - path: \source\vc14\**\theforgottenserver*.exe
-  - path: \source\vc14\**\*.dll
-  - path: OTG.zip
+  - path: vc14\**\theforgottenserver*.exe
+  - path: vc14\**\*.dll
+  - path: OTG-Premium-Version.zip

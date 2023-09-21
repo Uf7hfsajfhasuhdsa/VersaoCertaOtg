@@ -9,7 +9,7 @@ local function ServerSave()
 		Game.setGameState(GAME_STATE_SHUTDOWN)
 	end
 	-- Updating daily reward next server save.
-	setGlobalStorageValueDB(GlobalStorage.LastServerSave, os.time()) -- needed for the daily reward system
+	updateGlobalStorage(DailyReward.storages.lastServerSave, os.time())
 end
 
 local function ServerSaveWarning(time)

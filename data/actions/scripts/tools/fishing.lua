@@ -23,8 +23,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 
 		toPosition:sendMagicEffect(CONST_ME_WATERSPLASH)
-		target:transform(targetId + 1)
-		target:decay()
+		target:remove()
 
 		local rareChance = math.random(100)
 		if rareChance == 1 then

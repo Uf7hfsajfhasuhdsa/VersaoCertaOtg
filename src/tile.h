@@ -141,11 +141,8 @@ class TileItemVector : private ItemVector
 			}
 			return *getBeginDownItem();
 		}
-		void increaseDownItemCount() {
-			downItemCount += 1;
-		}
-		void decreaseDownItemCount() {
-			downItemCount -= 1;
+		void addDownItemCount(int32_t increment) {
+			downItemCount += increment;
 		}
 
 	private:
@@ -280,7 +277,6 @@ class Tile : public Cylinder
 		}
 
 		Item* getUseItem(int32_t index) const;
-    	Item* getDoorItem() const;
 
 		Item* getGround() const {
 			return ground;

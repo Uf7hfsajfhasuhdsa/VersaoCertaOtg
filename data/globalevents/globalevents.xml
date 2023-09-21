@@ -44,8 +44,6 @@
 	<!-- World Changes -->
 	<globalevent name="FuryGates" type="startup" script="worldchanges/furygates.lua" />
 	<globalevent name="TheirMastersVoice" type="startup" script="worldchanges/theirmastersvoice.lua" />
-	<globalevent type="startup" name="dreamcourtsboss" script="worldchanges/dreamcourtsboss.lua" />
-
 
 	<!-- Raids -->
 	<globalevent name="SpawnRaid" interval="60000" script="spawn/raids.lua"/>
@@ -61,5 +59,4 @@
 	<globalevent name="checkInbox" interval="30000" script="others/checkInbox.lua"/>
 	<globalevent interval="100000" name="GuildWar" script="guildwar.lua"/>
 	<globalevent name="npcsSpawn" type="startup" script="server/npcsSpawn.lua"/>
-	<globalevent name="hirelingSave" type="shutdown" script="others/hireling_save.lua"/>
 </globalevents>

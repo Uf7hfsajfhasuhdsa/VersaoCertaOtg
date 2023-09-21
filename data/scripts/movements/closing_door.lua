@@ -1,28 +1,23 @@
-  
 -- Level and quests closing door (onStepIn).
 -- This prevents a player who has not yet done the quest, from crossing the player who has already done so, skipping the entire quest and going straight to the final reward.
-local closingDoor = MoveEvent()
+local door = MoveEvent()
 
 local doorIds = {}
-for index, value in ipairs(QuestDoorTable) do
+for index, value in ipairs(questDoor) do
     if not table.contains(doorIds, value.openDoor) then
         table.insert(doorIds, value.openDoor)
     end
 end
-for index, value in ipairs(LevelDoorTable) do
+for index, value in ipairs(levelDoor) do
     if not table.contains(doorIds, value.openDoor) then
         table.insert(doorIds, value.openDoor)
     end
 end
 
-function closingDoor.onStepIn(creature, item, position, fromPosition)
-	local player = creature:getPlayer()
-	if not player then
-		return
-	end
-
-    for index, value in ipairs(QuestDoorTable) do
-		 if value.openDoor == item.itemid then
+function door.onStepIn(player, item, position, fromPosition)
+	local itemId = item:getId()
+    for index, value in ipairs(questDoor) do
+		 if value.openDoor == itemId then
 			if player:getStorageValue(item.actionid) ~= -1 then
 				return true
 			else
@@ -32,8 +27,8 @@ function closingDoor.onStepIn(creature, item, position, fromPosition)
 			end
 		end
 	end
-	for index, value in ipairs(LevelDoorTable) do
-		 if value.openDoor == item.itemid then
+	for index, value in ipairs(levelDoor) do
+		 if value.openDoor == itemId then
 			if item.actionid > 0 and player:getLevel() >= item.actionid - 1000 then
 				return true
 			else
@@ -47,33 +42,27 @@ function closingDoor.onStepIn(creature, item, position, fromPosition)
 end
 
 for index, value in ipairs(doorIds) do
-    closingDoor:id(value)
+    door:id(value)
 end
-
-closingDoor:register()
+door:register()
 
 -- Level and quests closing door (onStepOut).
 -- This closes the door after the player passes through it.
-local closingDoor = MoveEvent()
+local door = MoveEvent()
 
 local doorIds = {}
-for index, value in ipairs(QuestDoorTable) do
+for index, value in ipairs(questDoor) do
     if not table.contains(doorIds, value.openDoor) then
         table.insert(doorIds, value.openDoor)
     end
 end
-for index, value in ipairs(LevelDoorTable) do
+for index, value in ipairs(levelDoor) do
     if not table.contains(doorIds, value.openDoor) then
         table.insert(doorIds, value.openDoor)
     end
 end
 
-function closingDoor.onStepOut(creature, item, position, fromPosition)
-	local player = creature:getPlayer()
-	if not player then
-		return
-	end
-
+function door.onStepOut(creature, item, position, fromPosition)
 	local tile = Tile(position)
 	if tile:getCreatureCount() > 0 then
 		return true
@@ -101,12 +90,12 @@ function closingDoor.onStepOut(creature, item, position, fromPosition)
 		end
 	end
 
-	for index, value in ipairs(LevelDoorTable) do
+	for index, value in ipairs(levelDoor) do
 		if value.openDoor == item.itemid then
 			item:transform(value.closedDoor)
 		end
 	end
-	for index, value in ipairs(QuestDoorTable) do
+	for index, value in ipairs(questDoor) do
 		if value.openDoor == item.itemid then
 			item:transform(value.closedDoor)
 		end
@@ -115,7 +104,6 @@ function closingDoor.onStepOut(creature, item, position, fromPosition)
 end
 
 for index, value in ipairs(doorIds) do
-    closingDoor:id(value)
+    door:id(value)
 end
-
-closingDoor:register()
+door:register()

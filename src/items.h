@@ -226,6 +226,7 @@ class ItemType
 		int32_t runeMagLevel = 0;
 		int32_t runeLevel = 0;
 		int32_t wrapableTo = 0;
+		uint16_t wrapContainer = 0;
 		uint16_t unmoveabledItem = 0;
 
 		CombatType_t combatType = COMBAT_NONE;
@@ -244,7 +245,6 @@ class ItemType
 
 		MagicEffectClasses magicEffect = CONST_ME_NONE;
 		Direction bedPartnerDir = DIRECTION_NONE;
-		QuickLootCategory_t quickLootCategory = LOOT_NONE;
 		WeaponType_t weaponType = WEAPON_NONE;
 		Ammo_t ammoType = AMMO_NONE;
 		ShootType_t shootType = CONST_ANI_NONE;
@@ -273,7 +273,6 @@ class ItemType
 		bool pickupable = false;
 		bool rotatable = false;
 		bool wrapable = false;
-		bool wrapContainer = false;
 		bool useable = false;
 		bool moveable = false;
 		bool alwaysOnTop = false;

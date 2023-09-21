@@ -30,7 +30,6 @@
 #include "configmanager.h"
 #include "scriptmanager.h"
 #include "rsa.h"
-#include "prey.h"
 #include "protocolold.h"
 #include "protocollogin.h"
 #include "protocolstatus.h"
@@ -50,7 +49,6 @@ Monsters g_monsters;
 Vocations g_vocations;
 extern Scripts* g_scripts;
 RSA g_RSA;
-Prey g_prey;
 
 std::mutex g_loaderLock;
 std::condition_variable g_loaderSignal;
@@ -132,7 +130,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	std::cout << std::endl;
 
 	std::cout << "Special Credits for: " << STATUS_SERVER_CREDITS << "." << std::endl;
-	std::cout << "Link of repository: https://github.com/Johncorex" << std::endl;
+	std::cout << "Link of repository: https://github.com/Johncorex/OTG-Premium-Version" << std::endl;
 	std::cout << std::endl;
 
 	// TODO: dirty for now; Use stdarg;
@@ -235,12 +233,6 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		return;
 	}
 
-	std::cout << ">> Loading prey data" << std::endl;
-	if (!g_prey.loadFromXml()) {
-		startupErrorMessage("Unable to load prey data!");
-		return;
-	}
-
 	std::cout << ">> Checking world type... " << std::flush;
 	std::string worldType = asLowerCaseString(g_config.getString(ConfigManager::WORLD_TYPE));
 	if (worldType == "pvp") {
@@ -299,7 +291,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	IOMarket::checkExpiredOffers();
 	IOMarket::getInstance().updateStatistics();
 
-	std::cout << ">> [OTG-BR] Loaded all modules, server starting up..." << std::endl;
+	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
 
 #ifndef _WIN32
 	if (getuid() == 0 || geteuid() == 0) {
@@ -311,10 +303,3 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	g_game.setGameState(GAME_STATE_NORMAL);
 	g_loaderSignal.notify_all();
 }
-
-#ifndef _WIN32
-__attribute__ ((used)) void saveServer() {
-	if(g_game.getPlayersOnline() > 0)
-		g_game.saveGameState(true);
-}
-#endif

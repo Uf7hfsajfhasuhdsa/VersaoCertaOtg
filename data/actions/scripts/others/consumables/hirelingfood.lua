@@ -76,7 +76,7 @@ function onUse(player, item, frompos, item2, topos)
 			player:setStorageValue(config.storage, os.time() + config.exhaust)
 		end
 	else
-		player:sendCancelMessage("You're still too full to eat any gourmet dishes for a while.")
+		player:sendCancelMessage("You are full or you've already eaten a dish within 10 minutes.")
 	end
 	return true
 end

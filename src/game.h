@@ -47,7 +47,6 @@ enum stackPosType_t {
 	STACKPOS_TOPDOWN_ITEM,
 	STACKPOS_USEITEM,
 	STACKPOS_USETARGET,
-  	STACKPOS_FIND_THING,
 };
 
 enum WorldType_t {
@@ -209,7 +208,7 @@ class Game
 		  * \param extendedPos If true, the creature will in first-hand be placed 2 tiles away
 		  * \param force If true, placing the creature will not fail because of obstacles (creatures/items)
 		  */
-		bool placeCreature(Creature* creature, const Position& pos, bool extendedPos = false, bool force = false);
+		bool placeCreature(Creature* creature, const Position& pos, bool extendedPos = false, bool force = false, Creature* master = nullptr);
 
 		/**
 		  * Remove Creature from the map.
@@ -232,10 +231,6 @@ class Game
 		}
 		uint32_t getPlayersRecord() const {
 			return playersRecord;
-		}
-
-		uint16_t getItemsPriceCount() const {
-			return itemsSaleCount;
 		}
 
 		LightInfo getWorldLightInfo() const;
@@ -275,7 +270,7 @@ class Game
 		  * \param flags optional flags to modifiy the default behaviour
 		  * \returns true if the removal was successful
 		  */
-		bool removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags = 0, bool useBank = false);
+		bool removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags = 0);
 
 		/**
 		  * Add item(s) with monetary value
@@ -330,11 +325,6 @@ class Game
 		void playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, uint8_t button, uint8_t choice);
 		void playerReportRuleViolationReport(uint32_t playerId, const std::string& targetName, uint8_t reportType, uint8_t reportReason, const std::string& comment, const std::string& translation);
 
-		void updatePlayerSaleItems(uint32_t playerId);
-
-		void playerCyclopediaCharacterInfo(uint32_t playerId, CyclopediaCharacterInfoType_t characterInfoType);
-		void playerTournamentLeaderboard(uint32_t playerId, uint8_t leaderboardType);
-
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);
 		void internalCloseTrade(Player* player);
 		bool playerBroadcastMessage(Player* player, const std::string& text) const;
@@ -374,8 +364,6 @@ class Game
 		void playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string& text);
 		void playerBrowseField(uint32_t playerId, const Position& pos);
 		void playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_t index);
-		void playerInspectItem(Player* player, const Position& pos);
-		void playerInspectItem(Player* player, uint16_t itemId, uint8_t itemCount, bool cyclopedia);
 		void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		void playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
 								uint32_t tradePlayerId, uint16_t spriteId);
@@ -421,8 +409,6 @@ class Game
 		void playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous);
 		void playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
-		void playerRequestResourceData(uint32_t playerId, ResourceType_t resourceType);
-		void playerPreyAction(uint32_t playerId, uint8_t preySlotId, PreyAction_t preyAction, uint8_t monsterIndex);
 		void playerStoreOpen(uint32_t playerId, uint8_t serviceType);
 		void playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory* category);
 		void playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType, const std::string& additionalInfo="");
@@ -456,7 +442,7 @@ class Game
 
 		GameState_t getGameState() const;
 		void setGameState(GameState_t newState);
-		void saveGameState(bool crash = false);
+		void saveGameState();
 
 		//Events
 		void checkCreatureWalk(uint32_t creatureId);
@@ -499,8 +485,6 @@ class Game
 		bool loadMagicLevelStages();
 		uint64_t getMagicLevelStage(uint32_t level);
 
-		bool loadItemsPrice();
-
 		void loadMotdNum();
 		void saveMotdNum() const;
 		const std::string& getMotdHash() const { return motdHash; }
@@ -509,7 +493,6 @@ class Game
 
 		void sendOfflineTrainingDialog(Player* player);
 
-		const std::map<uint16_t, uint32_t>& getItemsPrice() const { return itemsPriceMap; }
 		const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
 
@@ -557,7 +540,6 @@ class Game
 	protected:
 		void checkImbuements();
 
-		void applyImbuementEffects(Creature* attacker, CombatDamage& damage, int32_t realDamage);
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
@@ -621,9 +603,6 @@ class Game
 
 		std::string motdHash;
 		uint32_t motdNum = 0;
-
-		std::map<uint16_t, uint32_t> itemsPriceMap;
-		uint16_t itemsSaleCount;
 
 		uint32_t lastStageLevel = 0;
 		bool stagesEnabled = false;

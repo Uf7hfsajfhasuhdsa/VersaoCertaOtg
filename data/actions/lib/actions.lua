@@ -1,13 +1,11 @@
-local groundIds = {354, 355} -- pick usable ground
-local sandIds = {231, 9059} -- desert sand
-local holeId = { -- usable rope holes, for rope spots see global.lua
-	294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 429, 430, 462, 469, 470, 482,
-	484, 485, 489, 924, 1369, 3135, 3136, 4835, 4837, 7933, 7938, 8170, 8249, 8250,
-	8251, 8252, 8254, 8255, 8256, 8276, 8277, 8279, 8281, 8284, 8285, 8286, 8323,
-	8567, 8585, 8595, 8596, 8972, 9606, 9625, 13190, 14461, 19519, 21536, 23713,
-	26020
+local holeId = {
+	294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 430, 462, 469, 470, 482,
+	484, 485, 489, 924, 3135, 3136, 7933, 7938, 8170, 8286, 8285, 8284, 8281,
+	8280, 8279, 8277, 8276, 8567, 8585, 8596, 8595, 8249, 8250, 8251,
+	8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536, 26020
 }
-local holes = {468, 481, 483, 7932, 23712} -- holes opened by shovel
+
+local holes = {468, 481, 483, 7932, 23712}
 
 local JUNGLE_GRASS = { 2782, 3985, 19433 }
 local WILD_GROWTH = { 1499, 11099, 2101, 1775, 1447, 1446}
@@ -217,33 +215,19 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
-	local tile = Tile(toPosition)
-	if not tile then
-		return false
-	end
-
-	local ground = tile:getGround()
-	if not ground then
-		return false
-	end
-
-	local targetId = target.itemid
-	local groundId = ground:getId()
-
-	if table.contains(holes, targetId) then
+	local targetId, targetActionId = target.itemid, target.actionid
+	if isInArray(holes, targetId) then
 		target:transform(targetId + 1)
 		target:decay()
-		toPosition.z = toPosition.z + 1
-		tile:relocateTo(toPosition)
 
-	elseif table.contains(sandIds, groundId) then
-		local randomValue = math.random(1, 100)
-		if target.actionid == 100 and randomValue <= 20 then
-			ground:transform(489)
-			ground:decay()
-		elseif randomValue == 1 then
+	elseif isInArray({231, 9059}, targetId) then
+		local rand = math.random(100)
+		if target.actionid == 100 and rand <= 20 then
+			target:transform(489)
+			target:decay()
+		elseif rand == 1 then
 			Game.createItem(2159, 1, toPosition)
-		elseif randomValue > 95 then
+		elseif rand > 95 then
 			Game.createMonster("Scarab", toPosition)
 		end
 		toPosition:sendMagicEffect(CONST_ME_POFF)
@@ -290,14 +274,6 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 		player:addItem(21250, 1)
 		player:setStorageValue(Storage.GravediggerOfDrefia.Mission70, 1)
 
-	-- ferumbras ascendant
-	elseif targetActionId == 53803 then
-		if player:getStorageValue(Storage.FerumbrasAscension.Ring) >= 1 then
-			return false
-		end
-		player:addItem(24826, 1)
-		player:setStorageValue(Storage.FerumbrasAscension.Ring, 1)
-
 	-- ???
 	elseif targetActionId == 50118 then
 		local wagonItem = Tile(Position(32717, 31492, 11)):getItemById(7131)
@@ -338,8 +314,19 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 			end
 		end
 
+	elseif targetId == 103 and targetActionId == 4205 then
+		if player:getStorageValue(Storage.TibiaTales.IntoTheBonePit) ~= 1 then
+			return false
+		end
 
-	elseif targetId == 22674 then
+		local remains = Game.createItem(2248, 1, toPosition)
+		if remains then
+			remains:setActionId(4206)
+		end
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+		addEvent(removeRemains, 60000, toPosition)
+
+		elseif targetId == 22674 then
 		if not player:removeItem(5091, 1) then
 			return false
 		end
@@ -353,6 +340,7 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 
 	return true
 end
+
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 	local stonePos = Position(32648, 32134, 10)
@@ -373,7 +361,7 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		target:transform(392)
 		target:decay()
 		toPosition:sendMagicEffect(CONST_ME_POFF)
-
+		
 	elseif targetId == 23759 then
 		target:remove()
 		toPosition:sendMagicEffect(CONST_ME_POFF)
@@ -436,18 +424,6 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		target:decay()
 		toPosition:sendMagicEffect(CONST_ME_HITAREA)
 
-	elseif targetId == 103 and targetActionId == 4205 then
-		if player:getStorageValue(Storage.TibiaTales.IntoTheBonePit) ~= 1 then
-			return false
-		end
-
-		local remains = Game.createItem(2248, 1, toPosition)
-		if remains then
-			remains:setActionId(4206)
-		end
-		toPosition:sendMagicEffect(CONST_ME_HITAREA)
-		addEvent(removeRemains, 60000, toPosition)
-
 	--sea of light
 	elseif targetId == 8634 then
 		if target.actionid == 4224 then
@@ -461,14 +437,6 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 			else
 				player:getPosition():sendMagicEffect(CONST_ME_POFF)
 			end
-		end
-
-	-- Shadows of Yalahar
-	elseif targetId == 8933 then
-		if player:getStorageValue(Storage.ShadownofYalahar.Questline) == 10 then
-		player:sendTextMessage(TALKTYPE_ORANGE_1, 'You have unearthed a crystal!')
-		player:addItem(10169, 1)
-		toPosition:sendMagicEffect(CONST_ME_POFF)
 		end
 
 	-- grimvale quest
@@ -736,7 +704,7 @@ function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 
 	--The Ice Islands Quest
 	if targetId == 388 then
-		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 20 then
+		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.TheIceIslands.SulphurLava) < 1 then
 				player:addItem(7247, 1) -- fine sulphur
 				player:setStorageValue(Storage.TheIceIslands.SulphurLava, 1)
@@ -746,7 +714,7 @@ function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 
 	elseif targetId == 4184 then
-		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 20 then
+		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.TheIceIslands.SporesMushroom) < 1 then
 				player:addItem(7251, 1)
 				player:setStorageValue(Storage.TheIceIslands.SporesMushroom, 1)
@@ -800,15 +768,6 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
-function onUseSickle(player, item, fromPosition, target, toPosition, isHotkey)
-	if target.itemid == 5465 then
-		target:transform(5464)
-		target:decay()
-		Game.createItem(5467, 1, toPosition)
-	end
-	return true
-end
-
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
 	if not isInArray({2566, 10511, 10515}, item.itemid) then
 		return false
@@ -830,7 +789,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 
 	--The Ice Islands Quest
 	if targetId == 7261 then
-		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 20 then
+		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.TheIceIslands.FrostbiteHerb) < 1 then
 				player:addItem(7248, 1)
 				player:setStorageValue(Storage.TheIceIslands.FrostbiteHerb, 1)
@@ -840,7 +799,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 		end
 
 	elseif targetId == 2733 then
-		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 20 then
+		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.TheIceIslands.FlowerCactus) < 1 then
 				player:addItem(7245, 1)
 				player:setStorageValue(Storage.TheIceIslands.FlowerCactus, 1)
@@ -852,7 +811,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 		end
 
 	elseif targetId == 4017 then
-		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 20 then
+		if player:getStorageValue(Storage.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.TheIceIslands.FlowerBush) < 1 then
 				player:addItem(7249, 1)
 				player:setStorageValue(Storage.TheIceIslands.FlowerBush, 1)

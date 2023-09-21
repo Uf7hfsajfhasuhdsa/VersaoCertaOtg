@@ -66,7 +66,6 @@
 	<movevent event="StepIn" actionid="9745" script="quests/dark trails/necrometerTileAcess.lua" />
 
 	<!-- Dangerous Depths -->
-	<movevent event="StepIn" itemid="25331" script="quests/dangerous depth/lavaDamage.lua"/>
 	<movevent event="StepIn" actionid="57231" script="quests/dangerous depth/lostExiles.lua"/>
 	<movevent event="StepIn" actionid="57240" script="quests/dangerous depth/gnomesAvalanche.lua"/>
 	<movevent event="StepIn" actionid="57241" script="quests/dangerous depth/gnomesOrdnance.lua"/>
@@ -409,14 +408,6 @@
 	<!-- Yalahar Demons -->
 	<movevent event="StepIn" fromaid="4244" toaid ="4245" script="others/teleports/yalaharDemons.lua" />
 
-	<!-- Rottin Wood Quest -->
-	<movevent event="StepIn" itemid="13174" script="quests/rottin wood quest/trap.lua"/>
-
-	<!-- Shadows of Yalahar Quest -->
-	<movevent event="StepIn" uniqueid="35594" script="quests/shadows of yalahar quest/tileCharge.lua"/>
-	<movevent event="StepIn" uniqueid="35605" script="quests/shadows of yalahar quest/tileShower11.lua"/>
-	<movevent event="StepIn" uniqueid="35608" script="quests/shadows of yalahar quest/entranceTeleport.lua"/>
-
 	<!-- Waterfall Quest (Port Hope) -->
 	<movevent event="StepIn" actionid="50022" script="quests/waterfall/waterfall.lua" />
 
@@ -569,9 +560,6 @@
 
 	<!-- Assassin Outfit Quest -->
 	<movevent event="StepIn" itemid="3139" script="quests/assassin outfit/erayohouse.lua"/>
-
-	<!-- Arito's Task -->
-	<movevent event="StepIn" uniqueid="26544" script="quests/aritos task/entranceTeleport.lua" />
 
 	<!-- Boots -->
 	<movevent event="Equip" itemid="34062" level="180" slot="feet" function="onEquipItem"> <!-- Pair of Dreamwalkers -->
@@ -3043,7 +3031,7 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</movevent>
-	<movevent event="DeEquip" itemid="35232" slot="head" function="onDeEquipItem" />
+	<movevent event="DeEquip" itemid="35232" slot="hand" function="onDeEquipItem" />
 	
 	<movevent event="Equip" itemid="35233" slot="hand" level="220" function="onEquipItem"> <!-- Cobra Sword -->
 		<vocation name="Knight" />
@@ -3195,12 +3183,6 @@
 	<movevent event="Equip" itemid="35150" slot="necklace" level="220" function="onEquipItem" > <!-- Rainbow Necklace -->
 	</movevent>
 	<movevent event="DeEquip" itemid="35150" slot="necklace" function="onDeEquipItem" />
-
-	<movevent event="Equip" itemid="37451" slot="hand" level="180" function="onEquipItem"> <!-- Phantasmal Axe -->
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="37451" slot="hand" function="onDeEquipItem" />
 
 	<!-- Imbuements -->
 	<movevent event="Equip" itemid="2423" slot="hand" function="onEquipItem" />

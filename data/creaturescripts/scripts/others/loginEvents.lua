@@ -50,12 +50,12 @@ function onLogin(player)
 	"Somewhat Beatable Death",
 	"deeplingBosses",
 	"theGreatDragonHuntKill",
+	"bonusPreyLootKill",
 	"bossesMissionCults",
 	"bragrumol_kill",
 	"mozradek_kill",
 	"xogixath_kill",
-	"CultoFafnar",
-	"BestiaryOnKill"
+	"CultoFafnar"
 }
 	
 	for i = 1, #events do

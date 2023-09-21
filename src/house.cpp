@@ -226,7 +226,7 @@ bool House::transferToDepot(Player* player) const
 	if (townId == 0 || owner == 0) {
 		return false;
 	}
-    int constructionKits[58][2] = {
+int constructionKits[58][2] = {
 {3901, 1666}, {3902, 1670}, {3903, 1652}, {3904, 1674},
 {3905, 1658}, {3906, 3813}, {3907, 3817}, {3908, 1619}, {3909, 12799}, {3910, 2105},
 {3911, 1614}, {3912, 3806}, {3913, 3807}, {3914, 3809}, {3915, 1716}, {3916, 1724},
@@ -249,15 +249,13 @@ bool House::transferToDepot(Player* player) const
 							moveItemList.push_back(containerItem);
 						}
 					}
-					
 					std::string itemName = item->getName();
 					uint16_t itemID = item->getID();
-					Item* newItem = g_game.transformItem(item, 26054);			
+					Item* newItem = g_game.transformItem(item, 26054);
 					ItemAttributes::CustomAttribute val;
 					val.set<int64_t>(itemID);
 					std::string key = "unWrapId";
-					newItem->setCustomAttribute(key, val);					
-					newItem->setIntAttr(ITEM_ATTRIBUTE_ACTIONID, itemID);
+					newItem->setCustomAttribute(key, val);
 					std::ostringstream ss;
 					ss << "Unwrap it in your own house to create a <" << itemName << ">.";
 					newItem->setStrAttr(ITEM_ATTRIBUTE_DESCRIPTION, ss.str());
@@ -265,7 +263,7 @@ bool House::transferToDepot(Player* player) const
 				}
 				else if (item->isPickupable()) {
 					moveItemList.push_back(item);
-				} 
+				}
 				else {
 					Container* container = item->getContainer();
 					if (container) {
@@ -292,8 +290,7 @@ bool House::transferToDepot(Player* player) const
 								}
 							}
 						}
-					}					
-					
+					}
 				}
 			}
 		}
@@ -550,29 +547,14 @@ void AccessList::addExpression(const std::string& expression)
 	std::string outExp;
 	outExp.reserve(expression.length());
 
-	std::string metachars = ".[{}()\\+|^$*?";
+	std::string metachars = ".[{}()\\+|^$";
 	for (const char c : expression) {
 		if (metachars.find(c) != std::string::npos) {
-			outExp += "";
+			outExp.push_back('\\');
 		}
 		outExp.push_back(c);
 	}
-	
-	replaceString(outExp, "*", ".*");
-	replaceString(outExp, "*", "");
-	replaceString(outExp, "?", "");
-	replaceString(outExp, "?", ".?");
-	replaceString(outExp, "0", "");
-	replaceString(outExp, "1", "");
-	replaceString(outExp, "2", "");
-	replaceString(outExp, "3", "");
-	replaceString(outExp, "4", "");
-	replaceString(outExp, "5", "");
-	replaceString(outExp, "6", "");
-	replaceString(outExp, "7", "");
-	replaceString(outExp, "8", "");
-	replaceString(outExp, "9", "");
-	replaceString(outExp, "**", ".*");
+
 	replaceString(outExp, "*", ".*");
 	replaceString(outExp, "?", ".?");
 
@@ -590,6 +572,7 @@ void AccessList::addExpression(const std::string& expression)
 		}
 	} catch (...) {}
 }
+
 bool AccessList::isInList(const Player* player)
 {
 	std::string name = asLowerCaseString(player->getName());

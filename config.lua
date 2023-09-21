@@ -32,26 +32,29 @@ maxPlayers = 0
 motd = "Bem vindo ao OTG-Premium-Version!"
 onePlayerOnlinePerAccount = true
 allowClones = false
-serverName = "Global-OTG"
+serverName = "OTG-Premium-Version"
 statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 35
-networkAttackThreshold = 35
+networkAttackThreshold = 4
 maxItem = 2000
 maxContainer = 100
 
 -- Version Manual
 clientVersionMin = 1100
-clientVersionMax = 1261
-clientVersionStr = "Only support outdated 10.00 and version 12.61"
+clientVersionMax = 1200
+clientVersionStr = "Only support outdated 10.00 and version 12.00"
 
 -- Depot Limit
 freeDepotLimit = 2000
 premiumDepotLimit = 10000
-depotBoxes = 18
+depotBoxes = 17
 
 -- GameStore
 gamestoreByModules = true
+
+-- Expert Pvp Config
+expertPvp = false
 
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
@@ -61,7 +64,6 @@ deathLosePercent = -1
 
 -- Houses
 -- NOTE: set housePriceEachSQM to -1 to disable the ingame buy house functionality
--- Periods: daily/weekly/monthly/yearly/never
 housePriceEachSQM = 10000
 houseRentPeriod = "monthly"
 
@@ -87,7 +89,7 @@ maxMarketOffersAtATimePerPlayer = 100
 mysqlHost = "127.0.0.1"
 mysqlUser = "root"
 mysqlPass = "senha"
-mysqlDatabase = "database"
+mysqlDatabase = "global"
 mysqlPort = 3306
 mysqlSock = ""
 passwordType = "sha1"
@@ -118,9 +120,9 @@ serverSaveShutdown = true
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 1
-rateSkill = 100
-rateLoot = 5
-rateMagic = 60
+rateSkill = 50
+rateLoot = 3
+rateMagic = 25
 rateSpawn = 1
 
 -- Monster rates
